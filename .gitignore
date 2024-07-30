@@ -1,0 +1,3 @@
+/ocis/ocis-config/*.*
+/ocis/ocis-data/**/*
+.env
