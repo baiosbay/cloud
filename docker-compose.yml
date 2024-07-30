@@ -10,12 +10,14 @@ services:
       - .env
     depends_on:
       - ldap-server
+    command: [ "-c", "ocis init || true; ocis server" ]
     volumes:
       - ./ocis/ocis-config:/etc/ocis
       - ./ocis/ocis-data:/var/lib/ocis
       - ./init.sh:/init.sh
       - ./banned-password-list.txt:/etc/ocis/banned-password-list.txt
-    entrypoint: ["/init.sh"]
+    entrypoint:
+      - /bin/sh
 
   ldap-server:
     image: bitnami/openldap:2.6
