@@ -1,15 +1,15 @@
 version: '3.8'
 services:
   owncloud:
-    image: owncloud/ocis:5.0-linux-amd64
+    image: owncloud/ocis:4.0-linux-amd64
     container_name: owncloud_ocis
     restart: always
     ports:
       - '9200:9200'
     env_file:
       - .env
-    depends_on:
-      - ldap-server
+    # depends_on:
+    #   - ldap-server
     command: [ "-c", "ocis init || true; ocis server" ]
     volumes:
       - ./ocis/ocis-config:/etc/ocis
@@ -19,31 +19,31 @@ services:
     entrypoint:
       - /bin/sh
 
-  ldap-server:
-    image: bitnami/openldap:2.6
-    entrypoint: ["/bin/sh", "/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh", "/opt/bitnami/scripts/openldap/run.sh" ]
-    env_file:
-      - .env
-    ports:
-      - "127.0.0.1:389:1389"
-      - "127.0.0.1:636:1636"
-    volumes:
-      - ./config/ldap/ldif:/ldifs
-      - ./config/ldap/schemas:/schemas
-      - ./config/ldap/docker-entrypoint-override.sh:/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh
-      - ldap-certs:/opt/bitnami/openldap/share
-    logging:
-      driver: ${LOG_DRIVER:-local}
-    restart: always
+#   ldap-server:
+#     image: bitnami/openldap:2.6
+#     entrypoint: ["/bin/sh", "/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh", "/opt/bitnami/scripts/openldap/run.sh" ]
+#     env_file:
+#       - .env
+#     ports:
+#       - "127.0.0.1:389:1389"
+#       - "127.0.0.1:636:1636"
+#     volumes:
+#       - ./config/ldap/ldif:/ldifs
+#       - ./config/ldap/schemas:/schemas
+#       - ./config/ldap/docker-entrypoint-override.sh:/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh
+#       - ldap-certs:/opt/bitnami/openldap/share
+#     logging:
+#       driver: ${LOG_DRIVER:-local}
+#     restart: always
 
-  ldap-manager:
-    image: osixia/phpldapadmin:latest
-    env_file:
-      - .env
-    logging:
-      driver: ${LOG_DRIVER:-local}
-    restart: always
+#   ldap-manager:
+#     image: osixia/phpldapadmin:latest
+#     env_file:
+#       - .env
+#     logging:
+#       driver: ${LOG_DRIVER:-local}
+#     restart: always
 
-volumes:
-  certs:
-  ldap-certs:
+# volumes:
+#   certs:
+#   ldap-certs:
